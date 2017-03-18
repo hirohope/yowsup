@@ -27,6 +27,9 @@ class ChatstateProtocolEntity(ProtocolEntity):
     def getState(self):
         return self._state
 
+    def getFrom(self, full = True):
+        return self._from if full else self._from.split('@')[0]
+
     def toProtocolTreeNode(self):
         node = self._createProtocolTreeNode({}, None, data = None)
         node.addChild(ProtocolTreeNode(self._state))
