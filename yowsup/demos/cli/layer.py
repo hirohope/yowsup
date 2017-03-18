@@ -56,6 +56,7 @@ class YowsupCliLayer(Cli, YowInterfaceLayer):
         # /message send foobar "HI"
         # and then it will get automaticlaly mapped to foobar's jid
         self.jidAliases = {
+            "NAME": "56982910652@s.whatsapp.net"
             # "NAME": "PHONE@s.whatsapp.net"
         }
 
@@ -145,6 +146,7 @@ class YowsupCliLayer(Cli, YowInterfaceLayer):
         if self.assertConnected():
             entity = SubscribePresenceProtocolEntity(self.aliasToJid(contact))
             self.toLower(entity)
+            print("1111111")
 
     ########### END PRESENCE #############
 
@@ -451,6 +453,7 @@ class YowsupCliLayer(Cli, YowInterfaceLayer):
 
     @ProtocolEntityCallback("chatstate")
     def onChatstate(self, entity):
+        print("oooooooooooo")
         print(entity)
 
     @ProtocolEntityCallback("iq")
