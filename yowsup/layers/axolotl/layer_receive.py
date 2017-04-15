@@ -198,6 +198,15 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
         elif m.HasField("image_message"):
             handled = True
             self.handleImageMessage(node, m.image_message)
+        elif m.HasField("document_message"):
+            handled = True
+            self.handleDocumentMessage(node, m.document_message)
+        elif m.HasField("video_message"):
+            handled = True
+            self.handleVideoMessage(node, m.video_message)
+        elif m.HasField("audio_message"):
+            handled = True
+            self.handleAudioMessage(node, m.audio_message)
 
         if not handled:
             print(m)
@@ -237,19 +246,42 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
         self.toUpper(messageNode)
 
     def handleUrlMessage(self, originalEncNode, urlMessage):
-        #convert to ??
-        pass
+        messageNode = copy.deepcopy(originalEncNode)
+        messageNode["type"] = "media"
+        mediaNode = ProtocolTreeNode("media", {
+            "type": "url",
+            "text": urlMessage.text,
+            "match": urlMessage.matched_text,
+            "url": urlMessage.canonical_url,
+            "description": urlMessage.description,
+            "title": urlMessage.title
+        }, data = urlMessage.jpeg_thumbnail)
+        messageNode.addChild(mediaNode)
+        self.toUpper(messageNode)
 
     def handleDocumentMessage(self, originalEncNode, documentMessage):
-        #convert to ??
-        pass
+        messageNode = copy.deepcopy(originalEncNode)
+        messageNode["type"] = "media"
+        mediaNode = ProtocolTreeNode("media", {
+            "type": "document",
+            "url": documentMessage.url,
+            "mimetype": documentMessage.mime_type,
+            "title": documentMessage.title,
+            "filehash": documentMessage.file_sha256,
+            "size": str(documentMessage.file_length),
+            "pages": str(documentMessage.page_count),
+            "mediakey": documentMessage.media_key
+        }, data = documentMessage.jpeg_thumbnail)
+        messageNode.addChild(mediaNode)
+        self.toUpper(messageNode)
+
 
     def handleLocationMessage(self, originalEncNode, locationMessage):
         messageNode = copy.deepcopy(originalEncNode)
         messageNode["type"] = "media"
         mediaNode = ProtocolTreeNode("media", {
             "latitude": locationMessage.degrees_latitude,
-            "longitude": locationMessage.degress_longitude,
+            "longitude": locationMessage.degrees_longitude,
             "name": "%s %s" % (locationMessage.name, locationMessage.address),
             "url": locationMessage.url,
             "encoding": "raw",
@@ -286,3 +318,47 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
             groupCipher = GroupCipher(self.store, senderKeyName)
             self.groupCiphers[senderKeyName] = groupCipher
         return groupCipher
+
+
+    def handleAudioMessage(self, originalEncNode, audioMessage):
+        messageNode = copy.deepcopy(originalEncNode)
+        messageNode["type"] = "media"
+        mediaNode = ProtocolTreeNode("media", {
+            "type": "audio",
+            "filehash": audioMessage.file_sha256,
+            "size": str(audioMessage.file_length),
+            "url": audioMessage.url,
+            "mimetype": audioMessage.mime_type.split(';')[0],
+            "encoding": audioMessage.mime_type.split(';')[1].strip() if len(audioMessage.mime_type.split(';')) > 1 else "",
+            "duration": str(audioMessage.duration),
+            "seconds": str(audioMessage.duration),
+            "encoding": "raw",
+            "file": "enc",
+            "ip": "0",
+            "mediakey": audioMessage.media_key
+        })
+        messageNode.addChild(mediaNode)
+
+        self.toUpper(messageNode)
+
+    def handleVideoMessage(self, originalEncNode, videoMessage):
+        messageNode = copy.deepcopy(originalEncNode)
+        messageNode["type"] = "media"
+        mediaNode = ProtocolTreeNode("media", {
+            "type": "video",
+            "filehash": videoMessage.file_sha256,
+            "size": str(videoMessage.file_length),
+            "url": videoMessage.url,
+            "mimetype": videoMessage.mime_type.split(';')[0],
+            "encoding": videoMessage.mime_type.split(';')[1].strip() if len(videoMessage.mime_type.split(';')) > 1 else "",
+            "duration": str(videoMessage.duration),
+            "seconds": str(videoMessage.duration),
+            "caption": videoMessage.caption,
+            "encoding": "raw",
+            "file": "enc",
+            "ip": "0",
+            "mediakey": videoMessage.media_key
+        }, data = videoMessage.jpeg_thumbnail)
+        messageNode.addChild(mediaNode)
+
+        self.toUpper(messageNode)
