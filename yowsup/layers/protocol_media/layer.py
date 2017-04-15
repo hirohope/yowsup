@@ -1,4 +1,6 @@
 from yowsup.layers import YowLayer, YowLayerEvent, YowProtocolLayer
+from .protocolentities import DocumentDownloadableMediaMessageProtocolEntity
+from .protocolentities import UrlMediaMessageProtocolEntity
 from .protocolentities import ImageDownloadableMediaMessageProtocolEntity
 from .protocolentities import AudioDownloadableMediaMessageProtocolEntity
 from .protocolentities import VideoDownloadableMediaMessageProtocolEntity
@@ -51,6 +53,12 @@ class YowMediaProtocolLayer(YowProtocolLayer):
                 self.toUpper(entity)
             elif mediaNode.getAttributeValue("type") == "vcard":
                 entity = VCardMediaMessageProtocolEntity.fromProtocolTreeNode(node)
+                self.toUpper(entity)
+            elif mediaNode.getAttributeValue("type") == "url":
+                entity = UrlMediaMessageProtocolEntity.fromProtocolTreeNode(node)
+                self.toUpper(entity)
+            elif mediaNode.getAttributeValue("type") == "document":
+                entity = DocumentDownloadableMediaMessageProtocolEntity.fromProtocolTreeNode(node)
                 self.toUpper(entity)
 
     def sendIq(self, entity):
