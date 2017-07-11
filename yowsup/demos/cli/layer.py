@@ -540,11 +540,11 @@ class YowsupCliLayer(Cli, YowInterfaceLayer):
 
     def doSendMedia(self, mediaType, filePath, url, to, ip = None, caption = None):
         if mediaType == RequestUploadIqProtocolEntity.MEDIA_TYPE_IMAGE:
-        	entity = ImageDownloadableMediaMessageProtocolEntity.fromFilePath(filePath, url, ip, to, caption = caption)
+            entity = ImageDownloadableMediaMessageProtocolEntity.fromFilePath(filePath, url, ip, to, caption = caption)
         elif mediaType == RequestUploadIqProtocolEntity.MEDIA_TYPE_AUDIO:
-        	entity = AudioDownloadableMediaMessageProtocolEntity.fromFilePath(filePath, url, ip, to)
+            entity = AudioDownloadableMediaMessageProtocolEntity.fromFilePath(filePath, url, ip, to)
         elif mediaType == RequestUploadIqProtocolEntity.MEDIA_TYPE_VIDEO:
-        	entity = VideoDownloadableMediaMessageProtocolEntity.fromFilePath(filePath, url, ip, to, caption = caption)
+            entity = VideoDownloadableMediaMessageProtocolEntity.fromFilePath(filePath, url, ip, to, caption = caption)
         self.toLower(entity)
 
     def __str__(self):
