@@ -174,6 +174,8 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
             print(serializedData)
             print([s for s in serializedData])
             print([ord(s) for s in serializedData])
+            print(m)
+            print("--------")
             raise
         if not m or not serializedData:
             raise ValueError("Empty message")
