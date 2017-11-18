@@ -146,7 +146,6 @@ class YowsupCliLayer(Cli, YowInterfaceLayer):
         if self.assertConnected():
             entity = SubscribePresenceProtocolEntity(self.aliasToJid(contact))
             self.toLower(entity)
-            print("1111111")
 
     ########### END PRESENCE #############
 
@@ -453,7 +452,6 @@ class YowsupCliLayer(Cli, YowInterfaceLayer):
 
     @ProtocolEntityCallback("chatstate")
     def onChatstate(self, entity):
-        print("oooooooooooo")
         print(entity)
 
     @ProtocolEntityCallback("iq")
@@ -462,10 +460,12 @@ class YowsupCliLayer(Cli, YowInterfaceLayer):
 
     @ProtocolEntityCallback("receipt")
     def onReceipt(self, entity):
+        print(entity)
         self.toLower(entity.ack())
 
     @ProtocolEntityCallback("ack")
     def onAck(self, entity):
+        print(entity)
         #formattedDate = datetime.datetime.fromtimestamp(self.sentCache[entity.getId()][0]).strftime('%d-%m-%Y %H:%M')
         #print("%s [%s]:%s"%(self.username, formattedDate, self.sentCache[entity.getId()][1]))
         if entity.getClass() == "message":
