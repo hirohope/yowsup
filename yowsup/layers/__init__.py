@@ -83,8 +83,7 @@ class YowLayer(object):
         if self.__upper and not self.__upper.onEvent(yowLayerEvent):
             if yowLayerEvent.isDetached():
                 yowLayerEvent.detached = False
-                self.getStack().execDetached(lambda :  self.__upper.emitEvent(yowLayerEvent))
-
+                self.getStack().execDetached(lambda : self.__upper.emitEvent(yowLayerEvent))
             else:
                 self.__upper.emitEvent(yowLayerEvent)
 
@@ -93,7 +92,7 @@ class YowLayer(object):
         if self.__lower and not self.__lower.onEvent(yowLayerEvent):
             if yowLayerEvent.isDetached():
                 yowLayerEvent.detached = False
-                self.getStack().execDetached(lambda:self.__lower.broadcastEvent(yowLayerEvent))
+                self.getStack().execDetached(lambda: self.__lower.broadcastEvent(yowLayerEvent))
             else:
                 self.__lower.broadcastEvent(yowLayerEvent)
 

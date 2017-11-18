@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from .layer_base import AxolotlBaseLayer
 
 from yowsup.layers.protocol_receipts.protocolentities import OutgoingReceiptProtocolEntity
@@ -90,6 +91,11 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
                 self.handleSenderKeyMessage(node)
         except (InvalidMessageException, InvalidKeyIdException) as e:
             logger.warning("InvalidMessage or KeyId for %s, going to send a retry", encMessageProtocolEntity.getAuthor(False))
+
+            from yowsup.layers.axolotl.protocolentities.iq_key_get import GetKeysIqProtocolEntity
+            entity = GetKeysIqProtocolEntity([encMessageProtocolEntity.getAuthor(False)])
+            logger.info("[prime]: Trying GetKeys for %s getting keys now", encMessageProtocolEntity.getAuthor(False))
+
             retry = RetryOutgoingReceiptProtocolEntity.fromMessageNode(node, self.store.getLocalRegistrationId())
             self.toLower(retry.toProtocolTreeNode())
         except NoSessionException as e:
@@ -169,14 +175,16 @@ class AxolotlReceivelayer(AxolotlBaseLayer):
         handled = False
         try:
             m.ParseFromString(serializedData)
-        except:
+        except Exception as E:
             print("DUMP:")
             print(serializedData)
             print([s for s in serializedData])
             print([ord(s) for s in serializedData])
             print(m)
             print("--------")
-            raise
+            print(E)
+            print("--------")
+            raise E
         if not m or not serializedData:
             raise ValueError("Empty message")
 
