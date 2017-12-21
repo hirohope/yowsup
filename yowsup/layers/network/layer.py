@@ -51,12 +51,12 @@ class YowNetworkLayer(YowLayer, asyncore.dispatcher_with_send):
         return True
 
     def createConnection(self):
-        print("====================")
         self.state = self.__class__.STATE_CONNECTING
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
         self.out_buffer = bytearray()
         endpoint = self.getProp(self.__class__.PROP_ENDPOINT)
         logger.debug("Connecting to %s:%s" % endpoint)
+        print("Connecting to %s:%s" % endpoint)
         if self.proxyHandler != None:
             logger.debug("HttpProxy connect: %s:%d" % endpoint)
             self.proxyHandler.connect(self, endpoint)
@@ -83,6 +83,7 @@ class YowNetworkLayer(YowLayer, asyncore.dispatcher_with_send):
             self.emitEvent(YowLayerEvent(YowNetworkLayer.EVENT_STATE_CONNECTED))
 
     def handle_close(self, reason = "Connection Closed"):
+        print("handle close: {}".format(reason))
         if self.state != self.__class__.STATE_DISCONNECTED:
             self.state = self.__class__.STATE_DISCONNECTED
             self.connected = False
