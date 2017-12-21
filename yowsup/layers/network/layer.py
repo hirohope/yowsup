@@ -47,6 +47,7 @@ class YowNetworkLayer(YowLayer, asyncore.dispatcher_with_send):
 
     @EventCallback(EVENT_STATE_DISCONNECT)
     def onDisconnect(self, ev):
+        print("aca?", str(ev))
         self.destroyConnection(ev.getArg("reason"))
         return True
 
