@@ -64,6 +64,8 @@ class YowNetworkLayer(YowLayer, asyncore.dispatcher_with_send):
             try:
                 self.connect(endpoint)
             except OSError as e:
+                print("except?")
+                print(str(e))
                 self.handle_close(e)
 
     def destroyConnection(self, reason = None):
