@@ -51,6 +51,7 @@ class YowNetworkLayer(YowLayer, asyncore.dispatcher_with_send):
         return True
 
     def createConnection(self):
+        print("====================")
         self.state = self.__class__.STATE_CONNECTING
         self.create_socket(socket.AF_INET, socket.SOCK_STREAM)
         self.out_buffer = bytearray()
