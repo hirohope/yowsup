@@ -496,29 +496,29 @@ class YowsupCliLayer(Cli, YowInterfaceLayer):
     @ProtocolEntityCallback("message")
     def onMessage(self, message):
         messageOut = ""
-        if message.getType() == "text":
-            #self.output(message.getBody(), tag = "%s [%s]"%(message.getFrom(), formattedDate))
-            messageOut = self.getTextMessageBody(message)
-        elif message.getType() == "media":
-            messageOut = self.getMediaMessageBody(message)
-        else:
-            messageOut = "Unknown message type %s " % message.getType()
-            print(messageOut.toProtocolTreeNode())
+        # if message.getType() == "text":
+        #     #self.output(message.getBody(), tag = "%s [%s]"%(message.getFrom(), formattedDate))
+        #     messageOut = self.getTextMessageBody(message)
+        # elif message.getType() == "media":
+        #     messageOut = self.getMediaMessageBody(message)
+        # else:
+        #     messageOut = "Unknown message type %s " % message.getType()
+        #     print(messageOut.toProtocolTreeNode())
 
 
-        formattedDate = datetime.datetime.fromtimestamp(message.getTimestamp()).strftime('%d-%m-%Y %H:%M')
-        sender = message.getFrom() if not message.isGroupMessage() else "%s/%s" % (message.getParticipant(False), message.getFrom())
-        output = self.__class__.MESSAGE_FORMAT.format(
-            FROM = sender,
-            TIME = formattedDate,
-            MESSAGE = messageOut.encode('latin-1').decode() if sys.version_info >= (3, 0) else messageOut,
-            MESSAGE_ID = message.getId()
-            )
+        # formattedDate = datetime.datetime.fromtimestamp(message.getTimestamp()).strftime('%d-%m-%Y %H:%M')
+        # sender = message.getFrom() if not message.isGroupMessage() else "%s/%s" % (message.getParticipant(False), message.getFrom())
+        # output = self.__class__.MESSAGE_FORMAT.format(
+        #     FROM = sender,
+        #     TIME = formattedDate,
+        #     MESSAGE = messageOut.encode('latin-1').decode() if sys.version_info >= (3, 0) else messageOut,
+        #     MESSAGE_ID = message.getId()
+        #     )
 
-        self.output(output, tag = None, prompt = not self.sendReceipts)
-        if self.sendReceipts:
-            self.toLower(message.ack(self.sendRead))
-            self.output("Sent delivered receipt"+" and Read" if self.sendRead else "", tag = "Message %s" % message.getId())
+        # self.output(output, tag = None, prompt = not self.sendReceipts)
+        # if self.sendReceipts:
+        #     self.toLower(message.ack(self.sendRead))
+        #     self.output("Sent delivered receipt"+" and Read" if self.sendRead else "", tag = "Message %s" % message.getId())
 
 
     def getTextMessageBody(self, message):
