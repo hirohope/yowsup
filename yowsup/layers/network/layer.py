@@ -63,6 +63,7 @@ class YowNetworkLayer(YowLayer, asyncore.dispatcher_with_send):
             self.proxyHandler.connect(self, endpoint)
         else:
             try:
+                print("connect")
                 self.connect(endpoint)
             except OSError as e:
                 print("except?")
