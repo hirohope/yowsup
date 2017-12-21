@@ -71,6 +71,7 @@ class YowNetworkLayer(YowLayer, asyncore.dispatcher_with_send):
 
     def destroyConnection(self, reason = None):
         self.state = self.__class__.STATE_DISCONNECTING
+        print("destroy")
         self.handle_close(reason or "Requested")
 
     def getStatus(self):
