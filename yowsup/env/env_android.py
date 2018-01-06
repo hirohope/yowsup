@@ -23,9 +23,9 @@ class AndroidYowsupEnv(YowsupEnv):
     _VERSION = "2.17.426"
     _OS_NAME = "Android"
     _OS_VERSION = "4.3"
-    _DEVICE_NAME = "armani"
-    _MANUFACTURER = "Xiaomi"
-    _BUILD_VERSION = "JLS36C"
+    _DEVICE_NAME = "endeavoru"
+    _MANUFACTURER = "HTC"
+    _BUILD_VERSION = "IMM76D"
     _AXOLOTL = True
 
     def getVersion(self):
